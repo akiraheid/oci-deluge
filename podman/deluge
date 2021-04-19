@@ -1,0 +1,31 @@
+#!/bin/bash
+
+# Start a container with podman.
+set -e
+
+# Pick a random port on the host to map to the hardcoded port in the container
+rand() {
+	echo `shuf -i 49152-65536 -n 1`
+}
+LISTEN_PORT=`rand`
+OUT_START_PORT=`rand`
+OUT_END_PORT=`expr $OUT_START_PORT + 100`
+
+while [[ ($OUT_START_PORT -eq $LISTEN_PORT || ($LISTEN_PORT -gt $OUT_START_PORT && $LISTEN_PORT -lt $OUT_END_PORT)) ]]; do
+	OUT_START_PORT=`rand`
+	OUT_END_PORT=`expr $OUT_START_PORT + 100`
+done
+
+podman run \
+	-d \
+	-e DISPLAY=unix${DISPLAY} \
+	--name deluge \
+	-p $LISTEN_PORT:58008 \
+	-p $OUT_START_PORT-$OUT_END_PORT:42069-42169 \
+	--rm \
+	-v delugedata:/root/.config/deluge \
+	-v $HOME/.config/deluge/core.conf:/root/.config/deluge/core.conf \
+	-v $HOME/Downloads/deluge/:/root/Downloads/ \
+	-v /tmp/.X11-unix:/tmp/.X11-unix \
+	-v /usr/share/fonts/:/usr/share/fonts:ro \
+	localhost/deluge
