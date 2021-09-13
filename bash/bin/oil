@@ -1,0 +1,14 @@
+#!/bin/bash
+
+set -e
+
+echo "Now we're cookin'!"
+
+# VPN
+sudo protonvpn c -r
+
+# Update system
+sudo apt-get update
+sudo apt-get -y upgrade
+sudo apt-get -y dist-upgrade
+sudo apt-get -y auto-remove
