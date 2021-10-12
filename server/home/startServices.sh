@@ -1,3 +1,4 @@
+#!/bin/bash
 set -e
 
 podman pod exists services && podman pod rm -f services

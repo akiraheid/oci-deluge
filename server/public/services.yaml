@@ -1,0 +1,23 @@
+# Services
+apiVersion: v1
+kind: Pod
+metadata:
+  name: services
+spec:
+  containers:
+    - name: polo
+      image: docker.io/polo:latest
+      ports:
+        - containerPort: 8080
+          hostPort: 8080
+      restartPolicy: onFailure
+      volumeMounts:
+        - name: polo-vol
+          mountPath: /polo/users.txt
+          readOnly: true
+
+  volumes:
+    - name: polo-vol
+      hostPath:
+        path: /home/ubuntu/users.txt
+        type: Directory

@@ -47,7 +47,7 @@ syncthing() {
 		--network=host \
 		--userns=keep-id \
 		--volume $DIR/:/var/syncthing/ \
-		syncthing/syncthing:latest
+		docker.io/syncthing/syncthing:latest
 }
 
 ubuntu() {
